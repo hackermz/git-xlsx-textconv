@@ -11,7 +11,7 @@ import (
 
 func main() {
 	if len(os.Args) != 2 {
-		log.Fatal("Usage: git-xlsx-textconv file.xslx")
+		log.Fatal("Usage: git-xlsx-textconv file.xlsx")
 	}
 	excelFileName := os.Args[1]
 
@@ -21,7 +21,7 @@ func main() {
 	}
 
 	for _, sheet := range xlFile.Sheets {
-		for _, row := range sheet.Rows {
+		for k, row := range sheet.Rows {
 			cels := make([]string, len(row.Cells))
 			for i, cell := range row.Cells {
 				s := cell.String()
@@ -31,7 +31,7 @@ func main() {
 				s = strings.Replace(s, "\t", "\\t", -1)
 				cels[i] = s
 			}
-			fmt.Printf("[%s] %s\n", sheet.Name, strings.Join(cels, "\t"))
+			fmt.Printf("[%s:%d] %s\n", sheet.Name, k+1, strings.Join(cels, "\t"))
 		}
 	}
 }
